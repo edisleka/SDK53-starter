@@ -1,4 +1,3 @@
-import { Button } from '@/components/Button'
 import { Text } from '@/components/Text'
 import { View } from 'react-native'
 
@@ -8,7 +7,6 @@ export default function Index() {
       <Text size='lg' bold>
         Hello World
       </Text>
-      <Button title='Click me' />
     </View>
   )
 }
