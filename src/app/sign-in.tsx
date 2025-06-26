@@ -1,5 +1,6 @@
 import { Button } from '@/components/Button'
 import { Text } from '@/components/Text'
+import { Link } from 'expo-router'
 import { KeyboardAvoidingView, TextInput, View } from 'react-native'
 
 export default function SignInScreen() {
@@ -31,6 +32,10 @@ export default function SignInScreen() {
               placeholder='Enter your username'
               className='border border-gray-300 rounded-lg bg-gray-50'
               placeholderTextColor='#9CA3AF'
+              // autoFocus
+              autoCapitalize='none'
+              keyboardType='email-address'
+              autoComplete='email'
             />
             {/* Username Error */}
             <Text className='text-red-500 text-xs mt-1'>
@@ -45,6 +50,7 @@ export default function SignInScreen() {
               secureTextEntry
               className='border border-red-300 rounded-lg bg-gray-50'
               placeholderTextColor='#9CA3AF'
+              autoCapitalize='none'
             />
             {/* Password Error */}
             <Text className='text-red-500 text-xs mt-1'>
@@ -73,7 +79,9 @@ export default function SignInScreen() {
         <View className=''>
           <Text className='text-right text-gray-500 text-sm'>
             Don&apos;t have an account?{' '}
-            <Text className='text-blue-600 font-medium'>Sign up</Text>
+            <Link href='/create-account' className='text-blue-600 font-medium'>
+              Sign up
+            </Link>
           </Text>
         </View>
       </View>
