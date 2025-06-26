@@ -24,10 +24,10 @@ export function Text({
   return (
     <RNText
       className={cn(
-        size === 'sm' && 'text-sm mb-2',
-        size === 'md' && 'text-base mb-3',
-        size === 'lg' && 'text-lg mb-4',
-        size === 'hd' && 'text-xl mb-5',
+        size === 'sm' && 'text-sm',
+        size === 'md' && 'text-base',
+        size === 'lg' && 'text-lg',
+        size === 'hd' && 'text-xl',
         bold && 'font-bold',
         color === 'primary' && 'text-black',
         color === 'secondary' && 'text-gray-500',

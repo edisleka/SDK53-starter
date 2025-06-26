@@ -21,7 +21,7 @@ export function Button({
     <Pressable
       onPress={onPress}
       className={cn(
-        'flex-row items-center justify-center rounded-md px-5 py-3 mb-4 border',
+        'flex-row items-center justify-center rounded-md px-5 py-3 border',
         theme === 'primary' && 'bg-[#007AFF] border-[#007AFF]',
         theme === 'secondary' && 'bg-white border-gray-300',
         theme === 'tertiary' && 'bg-transparent border-transparent',

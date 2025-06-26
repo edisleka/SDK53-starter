@@ -4,8 +4,10 @@ import { View } from 'react-native'
 
 export default function OnboardingFinalScreen() {
   return (
-    <View className='flex-1 items-center justify-center'>
-      <Text>Onboarding Final Screen</Text>
+    <View className='flex-1  justify-center p-4'>
+      <Text center size='hd'>
+        Onboarding Screen 2
+      </Text>
       <Button title='Complete Onboarding' />
     </View>
   )
