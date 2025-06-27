@@ -2,7 +2,7 @@ import { Stack } from 'expo-router'
 import '../globals.css'
 
 const isLoggedIn = false
-const shouldCreateAccount = false
+const shouldCreateAccount = true
 const hasCompletedOnboarding = true
 const shouldVerifyAccount = true
 
@@ -16,14 +16,7 @@ export default function RootLayout() {
         <Stack.Screen name='sign-in' />
         <Stack.Protected guard={shouldCreateAccount}>
           <Stack.Screen name='create-account' />
-          <Stack.Protected
-            guard={
-              shouldVerifyAccount &&
-              !shouldCreateAccount &&
-              !isLoggedIn &&
-              hasCompletedOnboarding
-            }
-          >
+          <Stack.Protected guard={shouldVerifyAccount}>
             <Stack.Screen name='verify-account' />
           </Stack.Protected>
         </Stack.Protected>

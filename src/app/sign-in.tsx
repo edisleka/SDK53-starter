@@ -27,7 +27,6 @@ export default function SignInScreen() {
             label='Username'
             placeholder='Enter your username'
             error='Username is required'
-            placeholderTextColor='#9CA3AF'
             // autoFocus
             autoCapitalize='none'
             keyboardType='email-address'
@@ -38,19 +37,40 @@ export default function SignInScreen() {
             label='Password'
             placeholder='Enter your password'
             secureTextEntry
-            placeholderTextColor='#9CA3AF'
             autoCapitalize='none'
+            error='Password is required'
           />
         </View>
-        <Button title='Sign In' />
+        <Button
+          title='Sign In'
+          onPress={() => {
+            console.log('sign in')
+          }}
+        />
         <View className='flex-row items-center'>
           <View className='flex-1 h-px bg-gray-300' />
           <Text className='mx-4 text-gray-500'>or continue with</Text>
           <View className='flex-1 h-px bg-gray-300' />
         </View>
-        <View className='gap-2'>
-          <Button title='Google' />
-          <Button title='Facebook' />
+        <View className=''>
+          <Button
+            title='Google'
+            onPress={() => {
+              console.log('sign in')
+            }}
+          />
+          <Button
+            title='Facebook'
+            onPress={() => {
+              console.log('sign in with facebook')
+            }}
+          />
+          <Button
+            title='Apple'
+            onPress={() => {
+              console.log('sign in with apple')
+            }}
+          />
         </View>
         <View className=''>
           <Text className='text-right text-gray-500 text-sm'>

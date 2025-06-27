@@ -4,7 +4,7 @@ import { Text, TextInput, TextInputProps, View } from 'react-native'
 interface InputProps extends TextInputProps {
   label?: string
   className?: string
-  error?: boolean
+  error?: string
 }
 
 export function Input({ label, className, error, ...rest }: InputProps) {
@@ -19,6 +19,7 @@ export function Input({ label, className, error, ...rest }: InputProps) {
           error ? 'border-red-300' : 'border-gray-300',
           className
         )}
+        placeholderTextColor='#9CA3AF'
         {...rest}
       />
       {error && <Text className='text-red-500 text-xs mt-1'>{error}</Text>}
