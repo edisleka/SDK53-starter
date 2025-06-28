@@ -44,7 +44,7 @@ export default function SignInScreen() {
           </Text>
         </View>
         <View className=''>
-          <Input
+          <Input<SignInFields>
             label='Email'
             placeholder='Enter your email'
             control={control}
@@ -54,7 +54,7 @@ export default function SignInScreen() {
             keyboardType='email-address'
             autoComplete='email'
           />
-          <Input
+          <Input<SignInFields>
             label='Password'
             placeholder='Enter your password'
             secureTextEntry

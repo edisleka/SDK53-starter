@@ -1,22 +1,22 @@
 import { Text } from '@/components/Text'
 import { cn } from '@/utils/cn'
-import { Controller } from 'react-hook-form'
+import { Control, Controller, FieldValues, Path } from 'react-hook-form'
 import { TextInput, TextInputProps, View } from 'react-native'
 
-interface InputProps extends TextInputProps {
+interface InputProps<T extends FieldValues> extends TextInputProps {
   label?: string
   className?: string
-  control?: any
-  name: string
+  control: Control<T>
+  name: Path<T>
 }
 
-export function Input({
+export function Input<T extends FieldValues>({
   label,
   className,
   control,
   name,
   ...rest
-}: InputProps) {
+}: InputProps<T>) {
   return (
     <View>
       <Controller
