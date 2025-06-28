@@ -6,11 +6,13 @@ import { useForm } from 'react-hook-form'
 import { KeyboardAvoidingView, View } from 'react-native'
 
 export default function SignInScreen() {
-  const { control, handleSubmit } = useForm({
-    defaultValues: {
-      email: 'edisleka@gmail.com',
-    },
-  })
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({})
+
+  console.log(errors)
 
   const onSignIn = (data: any) => {
     console.log(data)
@@ -36,7 +38,6 @@ export default function SignInScreen() {
           <Input
             label='Email'
             placeholder='Enter your email'
-            error='Email is required'
             control={control}
             name='email'
             // autoFocus
@@ -49,7 +50,6 @@ export default function SignInScreen() {
             placeholder='Enter your password'
             secureTextEntry
             autoCapitalize='none'
-            error='Password is required'
             control={control}
             name='password'
           />
