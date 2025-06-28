@@ -22,7 +22,6 @@ export function Input({
       <Controller
         control={control}
         name={name}
-        rules={{ required: 'This field is required' }}
         render={({
           field: { value, onBlur, onChange },
           fieldState: { error },

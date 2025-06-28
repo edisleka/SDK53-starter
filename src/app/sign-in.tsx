@@ -1,21 +1,30 @@
 import { Button } from '@/components/Button'
 import { Input } from '@/components/Input'
 import { Text } from '@/components/Text'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Link } from 'expo-router'
 import { useForm } from 'react-hook-form'
 import { KeyboardAvoidingView, View } from 'react-native'
+import { z } from 'zod'
+
+const signInSchema = z.object({
+  email: z.string({ message: 'Email is required' }).email({
+    message: 'Invalid email address',
+  }),
+  password: z.string({ message: 'Password is required' }).min(8, {
+    message: 'Password must be at least 8 characters',
+  }),
+})
+
+type SignInFields = z.infer<typeof signInSchema>
 
 export default function SignInScreen() {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({})
+  const { control, handleSubmit } = useForm<SignInFields>({
+    resolver: zodResolver(signInSchema),
+  })
 
-  console.log(errors)
-
-  const onSignIn = (data: any) => {
-    console.log(data)
+  const onSignIn = (data: SignInFields) => {
+    console.log(data.email, data.password)
   }
 
   return (
@@ -64,7 +73,7 @@ export default function SignInScreen() {
           <Button
             title='Google'
             onPress={() => {
-              console.log('sign in')
+              console.log('sign in with google')
             }}
           />
           <Button
