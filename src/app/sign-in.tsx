@@ -2,9 +2,20 @@ import { Button } from '@/components/Button'
 import { Input } from '@/components/Input'
 import { Text } from '@/components/Text'
 import { Link } from 'expo-router'
+import { useForm } from 'react-hook-form'
 import { KeyboardAvoidingView, View } from 'react-native'
 
 export default function SignInScreen() {
+  const { control, handleSubmit } = useForm({
+    defaultValues: {
+      email: 'edisleka@gmail.com',
+    },
+  })
+
+  const onSignIn = (data: any) => {
+    console.log(data)
+  }
+
   return (
     <KeyboardAvoidingView className='flex-1 bg-white' behavior='padding'>
       <View className='flex-1 justify-center'>
@@ -16,7 +27,6 @@ export default function SignInScreen() {
             Sign in to your account to continue
           </Text>
         </View>
-
         <View className='bg-red-50 border border-red-200 rounded-lg p-3 mb-4 opacity-1'>
           <Text className='text-red-600 text-sm'>
             Invalid username or password
@@ -24,14 +34,15 @@ export default function SignInScreen() {
         </View>
         <View className=''>
           <Input
-            label='Username'
-            placeholder='Enter your username'
-            error='Username is required'
+            label='Email'
+            placeholder='Enter your email'
+            error='Email is required'
+            control={control}
+            name='email'
             // autoFocus
             autoCapitalize='none'
             keyboardType='email-address'
             autoComplete='email'
-            className='border-red-300'
           />
           <Input
             label='Password'
@@ -39,14 +50,11 @@ export default function SignInScreen() {
             secureTextEntry
             autoCapitalize='none'
             error='Password is required'
+            control={control}
+            name='password'
           />
         </View>
-        <Button
-          title='Sign In'
-          onPress={() => {
-            console.log('sign in')
-          }}
-        />
+        <Button title='Sign In' onPress={handleSubmit(onSignIn)} />
         <View className='flex-row items-center'>
           <View className='flex-1 h-px bg-gray-300' />
           <Text className='mx-4 text-gray-500'>or continue with</Text>
@@ -73,10 +81,18 @@ export default function SignInScreen() {
           />
         </View>
         <View className=''>
-          <Text className='text-right text-gray-500 text-sm'>
+          <Text className='text-right' color='secondary' size='sm'>
             Don&apos;t have an account?{' '}
             <Link href='/create-account' className='text-blue-600 font-medium'>
               Sign up
+            </Link>
+          </Text>
+        </View>
+        <View className=''>
+          <Text className='text-right' color='secondary' size='sm'>
+            Forgot password?{' '}
+            <Link href='/forgot-password' className='text-blue-600 font-medium'>
+              Reset password
             </Link>
           </Text>
         </View>

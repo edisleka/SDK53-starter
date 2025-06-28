@@ -1,8 +1,16 @@
 import { cn } from '@/utils/cn'
 import { Text as RNText, type TextProps as RNTextProps } from 'react-native'
 
-type TextSize = 'sm' | 'md' | 'lg' | 'hd'
-type TextColor = 'primary' | 'secondary' | 'tertiary'
+type TextSize = 'xs' | 'sm' | 'md' | 'lg' | 'hd'
+type TextColor =
+  | 'primary'
+  | 'secondary'
+  | 'tertiary'
+  | 'label'
+  | 'error'
+  | 'success'
+  | 'warning'
+  | 'info'
 
 interface TextProps extends RNTextProps {
   children: React.ReactNode
@@ -24,6 +32,7 @@ export function Text({
   return (
     <RNText
       className={cn(
+        size === 'xs' && 'text-xs',
         size === 'sm' && 'text-sm',
         size === 'md' && 'text-base',
         size === 'lg' && 'text-lg',
@@ -32,6 +41,11 @@ export function Text({
         color === 'primary' && 'text-black',
         color === 'secondary' && 'text-gray-500',
         color === 'tertiary' && 'text-gray-400',
+        color === 'label' && 'text-gray-700',
+        color === 'error' && 'text-red-500',
+        color === 'success' && 'text-green-500',
+        color === 'warning' && 'text-yellow-500',
+        color === 'info' && 'text-blue-500',
         center && 'text-center',
         className
       )}
