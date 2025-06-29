@@ -1,10 +1,46 @@
 import { Button } from '@/components/Button'
 import { Input } from '@/components/Input'
 import { Text } from '@/components/Text'
-import { Link } from 'expo-router'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Link, Redirect } from 'expo-router'
+import { useForm } from 'react-hook-form'
 import { KeyboardAvoidingView, View } from 'react-native'
+import { z } from 'zod'
+
+const signUpSchema = z.object({
+  username: z.string({ message: 'Username is required' }).min(3, {
+    message: 'Username must be at least 3 characters',
+  }),
+  email: z.string({ message: 'Email is required' }).email({
+    message: 'Invalid email address',
+  }),
+  password: z.string({ message: 'Password is required' }).min(8, {
+    message: 'Password must be at least 8 characters',
+  }),
+  confirmPassword: z
+    .string({ message: 'Confirm password is required' })
+    .min(8, {
+      message: 'Confirm password must be at least 8 characters',
+    }),
+})
+
+type SignUpFields = z.infer<typeof signUpSchema>
+
+const shouldCreateAccount = false
 
 export default function CreateAccountScreen() {
+  const { control, handleSubmit } = useForm<SignUpFields>({
+    resolver: zodResolver(signUpSchema),
+  })
+
+  if (!shouldCreateAccount) {
+    return <Redirect href='/sign-in' />
+  }
+
+  const onSignUp = (data: SignUpFields) => {
+    console.log(data.username, data.email, data.password, data.confirmPassword)
+  }
+
   return (
     <KeyboardAvoidingView className='flex-1 bg-white' behavior='padding'>
       <View className='flex-1 justify-center'>
@@ -22,39 +58,43 @@ export default function CreateAccountScreen() {
           </Text>
         </View>
         <View className=''>
-          <Input
+          <Input<SignUpFields>
             label='Username'
             placeholder='Enter your username'
-            error='Username is required'
             // autoFocus
             autoCapitalize='none'
             autoComplete='username'
             className='border-red-300'
+            control={control}
+            name='username'
           />
-          <Input
+          <Input<SignUpFields>
             label='Email'
             placeholder='Enter your email'
-            error='Please enter a valid email address'
             autoCapitalize='none'
             keyboardType='email-address'
             autoComplete='email'
+            control={control}
+            name='email'
           />
-          <Input
+          <Input<SignUpFields>
             label='Password'
             placeholder='Enter your password'
             secureTextEntry
             autoCapitalize='none'
-            error='Password is required'
+            control={control}
+            name='password'
           />
-          <Input
+          <Input<SignUpFields>
             label='Confirm Password'
             placeholder='Confirm your password'
             secureTextEntry
             autoCapitalize='none'
-            error='Passwords do not match'
+            control={control}
+            name='confirmPassword'
           />
         </View>
-        <Button title='Create Account' />
+        <Button title='Create Account' onPress={handleSubmit(onSignUp)} />
         <View className='flex-row items-center'>
           <View className='flex-1 h-px bg-gray-300' />
           <Text className='mx-4 text-gray-500'>or continue with</Text>

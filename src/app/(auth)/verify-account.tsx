@@ -1,14 +1,27 @@
 import { Button } from '@/components/Button'
 import { Input } from '@/components/Input'
 import { Text } from '@/components/Text'
-import { Link, Redirect } from 'expo-router'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Link } from 'expo-router'
+import { useForm } from 'react-hook-form'
 import { KeyboardAvoidingView, View } from 'react-native'
+import { z } from 'zod'
 
-const shouldCreateAccount = false
+const verifyAccountSchema = z.object({
+  code: z.string({ message: 'Code is required' }).min(6, {
+    message: 'Code must be 6 digits',
+  }),
+})
+
+type VerifyAccountFields = z.infer<typeof verifyAccountSchema>
 
 export default function VerifyAccountScreen() {
-  if (shouldCreateAccount) {
-    return <Redirect href='/create-account' />
+  const { control, handleSubmit } = useForm<VerifyAccountFields>({
+    resolver: zodResolver(verifyAccountSchema),
+  })
+
+  const onVerifyAccount = (data: VerifyAccountFields) => {
+    console.log(data.code)
   }
 
   return (
@@ -29,15 +42,19 @@ export default function VerifyAccountScreen() {
           </Text>
         </View>
 
-        <Input
+        <Input<VerifyAccountFields>
           label='Verification Code'
           placeholder='Enter 6-digit code'
-          error='Please enter a valid 6-digit code'
           keyboardType='number-pad'
           maxLength={6}
+          control={control}
+          name='code'
         />
 
-        <Button title='Verify Account' />
+        <Button
+          title='Verify Account'
+          onPress={handleSubmit(onVerifyAccount)}
+        />
 
         <View className=''>
           <Text className='text-center text-gray-500 text-sm'>

@@ -3,9 +3,11 @@
   "compilerOptions": {
     "strict": true,
     "module": "ESNext",
+    "baseUrl": ".",
     "forceConsistentCasingInFileNames": true,
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["src/*"],
+      "@assets/*": ["assets/*"]
     }
   },
   "include": [

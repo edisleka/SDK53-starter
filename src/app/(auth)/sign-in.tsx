@@ -105,6 +105,14 @@ export default function SignInScreen() {
             </Link>
           </Text>
         </View>
+        <View className=''>
+          <Text className='text-right' color='secondary' size='sm'>
+            Verify account?{' '}
+            <Link href='/verify-account' className='text-blue-600 font-medium'>
+              Verify account
+            </Link>
+          </Text>
+        </View>
       </View>
     </KeyboardAvoidingView>
   )
