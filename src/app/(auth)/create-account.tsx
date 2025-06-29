@@ -1,44 +1,55 @@
 import { Button } from '@/components/Button'
 import { Input } from '@/components/Input'
 import { Text } from '@/components/Text'
+import { supabase } from '@/lib/supabase'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Link, Redirect } from 'expo-router'
+import { Link } from 'expo-router'
 import { useForm } from 'react-hook-form'
-import { KeyboardAvoidingView, View } from 'react-native'
+import { Alert, KeyboardAvoidingView, View } from 'react-native'
 import { z } from 'zod'
 
 const signUpSchema = z.object({
-  username: z.string({ message: 'Username is required' }).min(3, {
-    message: 'Username must be at least 3 characters',
-  }),
   email: z.string({ message: 'Email is required' }).email({
     message: 'Invalid email address',
   }),
   password: z.string({ message: 'Password is required' }).min(8, {
     message: 'Password must be at least 8 characters',
   }),
-  confirmPassword: z
-    .string({ message: 'Confirm password is required' })
-    .min(8, {
-      message: 'Confirm password must be at least 8 characters',
-    }),
+  // confirmPassword: z
+  //   .string({ message: 'Confirm password is required' })
+  //   .min(8, {
+  //     message: 'Confirm password must be at least 8 characters',
+  //   }),
 })
+// .refine((data) => data.password === data.confirmPassword, {
+//   message: 'Passwords do not match',
+//   // path: ['confirmPassword'],
+// })
 
 type SignUpFields = z.infer<typeof signUpSchema>
-
-const shouldCreateAccount = false
 
 export default function CreateAccountScreen() {
   const { control, handleSubmit } = useForm<SignUpFields>({
     resolver: zodResolver(signUpSchema),
   })
 
-  if (!shouldCreateAccount) {
-    return <Redirect href='/sign-in' />
-  }
+  const onSignUp = async (data: SignUpFields) => {
+    try {
+      const { email, password } = data
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+      })
 
-  const onSignUp = (data: SignUpFields) => {
-    console.log(data.username, data.email, data.password, data.confirmPassword)
+      if (error) {
+        Alert.alert('Sign Up Error', error.message)
+        return
+      }
+    } catch (error) {
+      Alert.alert(
+        error instanceof Error ? error.message : 'An unknown error occurred'
+      )
+    }
   }
 
   return (
@@ -59,16 +70,6 @@ export default function CreateAccountScreen() {
         </View>
         <View className=''>
           <Input<SignUpFields>
-            label='Username'
-            placeholder='Enter your username'
-            // autoFocus
-            autoCapitalize='none'
-            autoComplete='username'
-            className='border-red-300'
-            control={control}
-            name='username'
-          />
-          <Input<SignUpFields>
             label='Email'
             placeholder='Enter your email'
             autoCapitalize='none'
@@ -76,6 +77,7 @@ export default function CreateAccountScreen() {
             autoComplete='email'
             control={control}
             name='email'
+            // autoFocus
           />
           <Input<SignUpFields>
             label='Password'
@@ -85,21 +87,23 @@ export default function CreateAccountScreen() {
             control={control}
             name='password'
           />
-          <Input<SignUpFields>
+          {/* <Input<SignUpFields>
             label='Confirm Password'
             placeholder='Confirm your password'
             secureTextEntry
             autoCapitalize='none'
             control={control}
             name='confirmPassword'
-          />
+          /> */}
         </View>
+
         <Button title='Create Account' onPress={handleSubmit(onSignUp)} />
-        <View className='flex-row items-center'>
+
+        {/* <View className='flex-row items-center'>
           <View className='flex-1 h-px bg-gray-300' />
           <Text className='mx-4 text-gray-500'>or continue with</Text>
           <View className='flex-1 h-px bg-gray-300' />
-        </View>
+        </View> */}
 
         <View className=''>
           <Text className='text-right text-gray-500 text-sm'>

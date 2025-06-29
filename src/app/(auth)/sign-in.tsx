@@ -1,10 +1,11 @@
 import { Button } from '@/components/Button'
 import { Input } from '@/components/Input'
 import { Text } from '@/components/Text'
+import { supabase } from '@/lib/supabase'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link } from 'expo-router'
 import { useForm } from 'react-hook-form'
-import { KeyboardAvoidingView, View } from 'react-native'
+import { Alert, KeyboardAvoidingView, View } from 'react-native'
 import { z } from 'zod'
 
 const signInSchema = z.object({
@@ -23,8 +24,25 @@ export default function SignInScreen() {
     resolver: zodResolver(signInSchema),
   })
 
-  const onSignIn = (data: SignInFields) => {
-    console.log(data.email, data.password)
+  const onSignIn = async (data: SignInFields) => {
+    try {
+      const { email, password } = data
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
+
+      if (error) {
+        Alert.alert('Sign In Error', error.message)
+        return
+      }
+
+      Alert.alert('Sign In Success')
+    } catch (error) {
+      Alert.alert(
+        error instanceof Error ? error.message : 'An unknown error occurred'
+      )
+    }
   }
 
   return (
@@ -64,12 +82,12 @@ export default function SignInScreen() {
           />
         </View>
         <Button title='Sign In' onPress={handleSubmit(onSignIn)} />
-        <View className='flex-row items-center'>
+        {/* <View className='flex-row items-center'>
           <View className='flex-1 h-px bg-gray-300' />
           <Text className='mx-4 text-gray-500'>or continue with</Text>
           <View className='flex-1 h-px bg-gray-300' />
-        </View>
-        <View className=''>
+        </View> */}
+        {/* <View className=''>
           <Button
             title='Google'
             onPress={() => {
@@ -88,7 +106,7 @@ export default function SignInScreen() {
               console.log('sign in with apple')
             }}
           />
-        </View>
+        </View> */}
         <View className=''>
           <Text className='text-right' color='secondary' size='sm'>
             Don&apos;t have an account?{' '}
