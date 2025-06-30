@@ -1,11 +1,11 @@
 import { Button } from '@/components/Button'
 import { Input } from '@/components/Input'
 import { Text } from '@/components/Text'
-import { supabase } from '@/lib/supabase'
+import { useAuthStore } from '@/store/authStore'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link } from 'expo-router'
 import { useForm } from 'react-hook-form'
-import { Alert, KeyboardAvoidingView, View } from 'react-native'
+import { KeyboardAvoidingView, View } from 'react-native'
 import { z } from 'zod'
 
 const signInSchema = z.object({
@@ -20,30 +20,26 @@ const signInSchema = z.object({
 type SignInFields = z.infer<typeof signInSchema>
 
 export default function SignInScreen() {
+  const {
+    logIn,
+    error,
+    isLoading,
+    clearError,
+    resetOnboarding,
+    user,
+    session,
+  } = useAuthStore()
   const { control, handleSubmit } = useForm<SignInFields>({
     resolver: zodResolver(signInSchema),
   })
 
   const onSignIn = async (data: SignInFields) => {
-    try {
-      const { email, password } = data
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      })
-
-      if (error) {
-        Alert.alert('Sign In Error', error.message)
-        return
-      }
-
-      Alert.alert('Sign In Success')
-    } catch (error) {
-      Alert.alert(
-        error instanceof Error ? error.message : 'An unknown error occurred'
-      )
-    }
+    clearError() // Clear any previous errors
+    await logIn(data.email, data.password)
   }
+
+  console.log('User', JSON.stringify(user, null, 2))
+  console.log('Session', JSON.stringify(session, null, 2))
 
   return (
     <KeyboardAvoidingView className='flex-1 bg-white' behavior='padding'>
@@ -56,11 +52,11 @@ export default function SignInScreen() {
             Sign in to your account to continue
           </Text>
         </View>
-        <View className='bg-red-50 border border-red-200 rounded-lg p-3 mb-4 opacity-1'>
-          <Text className='text-red-600 text-sm'>
-            Invalid username or password
-          </Text>
-        </View>
+        {error && (
+          <View className='bg-red-50 border border-red-200 rounded-lg p-3 mb-4'>
+            <Text className='text-red-600 text-sm'>{error}</Text>
+          </View>
+        )}
         <View className=''>
           <Input<SignInFields>
             label='Email'
@@ -81,7 +77,11 @@ export default function SignInScreen() {
             name='password'
           />
         </View>
-        <Button title='Sign In' onPress={handleSubmit(onSignIn)} />
+        <Button
+          title={isLoading ? 'Signing In...' : 'Sign In'}
+          onPress={handleSubmit(onSignIn)}
+          disabled={isLoading}
+        />
         {/* <View className='flex-row items-center'>
           <View className='flex-1 h-px bg-gray-300' />
           <Text className='mx-4 text-gray-500'>or continue with</Text>
@@ -131,6 +131,7 @@ export default function SignInScreen() {
             </Link>
           </Text>
         </View>
+        <Button title='reset onboarding' onPress={resetOnboarding} />
       </View>
     </KeyboardAvoidingView>
   )
