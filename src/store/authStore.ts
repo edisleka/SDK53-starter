@@ -1,7 +1,6 @@
 import { supabase } from '@/lib/supabase'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Session, User } from '@supabase/supabase-js'
-import { useEffect } from 'react'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 
@@ -47,10 +46,18 @@ export const useAuthStore = create(
       // Initialize authentication state
       initializeAuth: async () => {
         try {
-          // Get initial session
           const {
             data: { session },
+            error,
           } = await supabase.auth.getSession()
+
+          if (error) {
+            set({
+              error: error.message,
+              isLoading: false,
+            })
+            return
+          }
 
           if (session) {
             set({
@@ -183,39 +190,3 @@ export const useAuthStore = create(
     }
   )
 )
-
-// Hook to initialize auth state and listen for changes
-export const useAuthInitializer = () => {
-  const { initializeAuth } = useAuthStore()
-
-  useEffect(() => {
-    // Initialize auth state
-    initializeAuth()
-
-    // Listen for auth changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (session) {
-        useAuthStore.setState({
-          user: session.user,
-          session,
-          isAuthenticated: true,
-          isLoading: false,
-          error: null,
-        })
-      } else {
-        useAuthStore.setState({
-          user: null,
-          session: null,
-          isAuthenticated: false,
-          isLoading: false,
-        })
-      }
-    })
-
-    return () => {
-      subscription.unsubscribe()
-    }
-  }, [initializeAuth])
-}

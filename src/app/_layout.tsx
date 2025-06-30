@@ -1,10 +1,11 @@
 import { LoadingSpinner } from '@/components/LoadingSpinner'
-import { useAuthInitializer, useAuthStore } from '@/store/authStore'
+import { useAuthInitializer } from '@/hooks/useAuthInitializer'
+import { useAuthStore } from '@/store/authStore'
 import { Stack } from 'expo-router'
 import '../globals.css'
 
 export default function RootLayout() {
-  // Initialize auth state and listen for changes in auth store
+  // Initialize auth state and listen for changes
   useAuthInitializer()
 
   // Get auth state from store
