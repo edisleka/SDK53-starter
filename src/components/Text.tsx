@@ -32,11 +32,11 @@ export function Text({
   return (
     <RNText
       className={cn(
-        size === 'xs' && 'text-xs',
-        size === 'sm' && 'text-sm',
-        size === 'md' && 'text-base',
-        size === 'lg' && 'text-lg',
-        size === 'hd' && 'text-xl',
+        size === 'xs' && 'text-xs font-poppins-light',
+        size === 'sm' && 'text-sm font-poppins-regular',
+        size === 'md' && 'text-base font-poppins-regular',
+        size === 'lg' && 'text-lg font-poppins-medium',
+        size === 'hd' && 'text-xl font-poppins-bold',
         bold && 'font-bold',
         color === 'primary' && 'text-black',
         color === 'secondary' && 'text-gray-500',

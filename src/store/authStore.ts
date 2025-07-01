@@ -65,7 +65,6 @@ export const useAuthStore = create(
               session,
               isAuthenticated: true,
               isLoading: false,
-              shouldCreateAccount: false,
             })
           } else {
             set({
@@ -152,10 +151,8 @@ export const useAuthStore = create(
             user: null,
             session: null,
             isAuthenticated: false,
-            isVip: false,
             isLoading: false,
             error: null,
-            hasCompletedOnboarding: true,
           })
         } catch (error) {
           set({
