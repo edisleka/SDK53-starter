@@ -8,9 +8,12 @@ export default function Index() {
   // console.log('User', JSON.stringify(user, null, 2))
   // console.log('Session', JSON.stringify(session, null, 2))
   return (
-    <View className='flex-1  justify-center p-4'>
+    <View className='flex-1 justify-center items-start p-4 bg-light-background dark:bg-dark-background'>
       <Text center size='hd'>
-        Home Screen: User: {user?.email} Session: {session?.user.id}
+        User: {user?.email}
+      </Text>
+      <Text center size='md'>
+        Session: {session?.user.id}
       </Text>
     </View>
   )

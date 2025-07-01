@@ -1,3 +1,4 @@
+// for testing purposes only
 import { ActivityIndicator, View } from 'react-native'
 import { Text } from './Text'
 

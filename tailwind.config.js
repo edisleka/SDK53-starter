@@ -13,6 +13,18 @@ module.exports = {
         'poppins-thin': ['Poppins-Thin', 'sans-serif'],
         'poppins-italic': ['Poppins-Italic', 'sans-serif'],
       },
+      colors: {
+        // Light theme
+        light: {
+          background: '#ffffff',
+          text: '#1f2937',
+        },
+        // Dark theme
+        dark: {
+          background: '#1f2937',
+          text: '#f9fafb',
+        },
+      },
     },
   },
   plugins: [],
